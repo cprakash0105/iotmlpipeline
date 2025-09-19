@@ -1,0 +1,8 @@
+{
+  "sensor_id": "sensor_002",
+  "timestamp": "2025-08-29T11:27:28.850468",
+  "temperature": 95.8,
+  "humidity": 12.1,
+  "ml_prediction": -1,
+  "data_type": "anomaly_detection"
+}

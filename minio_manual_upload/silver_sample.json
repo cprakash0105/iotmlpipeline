@@ -1,0 +1,8 @@
+{
+  "sensor_id": "sensor_001",
+  "timestamp": "2025-08-29T11:27:28.850468",
+  "temperature": 24.5,
+  "humidity": 65.2,
+  "ml_prediction": 0,
+  "data_type": "processed_normal_reading"
+}

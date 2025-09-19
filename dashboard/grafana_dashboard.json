@@ -1,0 +1,51 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "IoT Sensor Analytics Dashboard",
+    "tags": ["iot", "ml", "anomaly"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Real-Time Sensor Readings",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "SELECT timestamp, temperature, sensor_id FROM sensor_readings WHERE $__timeFilter(timestamp) ORDER BY timestamp",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Anomaly Detection Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "SELECT COUNT(*) as anomalies FROM anomaly_alerts WHERE $__timeFilter(timestamp)",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Temperature vs Humidity",
+        "type": "scatterplot",
+        "targets": [
+          {
+            "expr": "SELECT temperature, humidity, CASE WHEN ml_prediction = -1 THEN 'Anomaly' ELSE 'Normal' END as status FROM sensor_readings WHERE $__timeFilter(timestamp)",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "5s"
+  }
+}
