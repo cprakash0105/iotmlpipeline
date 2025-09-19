@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: spark-write-to-minio
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+      - name: spark-driver
+        image: localhost/spark-minio:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/opt/bitnami/spark/bin/spark-submit"]
+        args:
+        - "--class"
+        - "org.apache.spark.deploy.PythonRunner"
+        - "--master"
+        - "local"
+        - "--deploy-mode"
+        - "client"
+        - "--conf"
+        - "spark.jars.ivy=/tmp/.ivy2"
+        - "--conf"
+        - "spark.hadoop.fs.s3a.endpoint=http://minio-service:9000"
+        - "--conf"
+        - "spark.hadoop.fs.s3a.access.key=minioadmin"
+        - "--conf"
+        - "spark.hadoop.fs.s3a.secret.key=minioadmin"
+        - "--conf"
+        - "spark.hadoop.fs.s3a.path.style.access=true"
+        - "--conf"
+        - "spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem"
+        - "--conf"
+        - "spark.hadoop.security.authentication=NOSASL"
+        - "--conf"
+        - "spark.security.credentials.hadoopfs.enabled=false"
+        - "--conf"
+        - "spark.hadoop.security.user.name=nonkerberosuser"
+        - "local:///opt/bitnami/spark/main.py"
+      restartPolicy: Never
